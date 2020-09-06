@@ -13,6 +13,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.FileInputStream;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -29,7 +31,7 @@ class RecordsControllerTest {
         MockHttpServletRequestBuilder builder =
                 MockMvcRequestBuilders.multipart("/")
                         .file(upload);
-        mockMvc.perform(builder).andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(builder).andExpect(status().isOk());
         mockMvc.perform(MockMvcRequestBuilders.get("/111")).andExpect(status().isOk());
         mockMvc.perform(MockMvcRequestBuilders.get("/123456")).andExpect(status().isNotFound());
     }
@@ -42,8 +44,24 @@ class RecordsControllerTest {
         MockHttpServletRequestBuilder builder =
                 MockMvcRequestBuilders.multipart("/")
                         .file(upload);
-        mockMvc.perform(builder).andExpect(status().isBadRequest()).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(builder).andExpect(status().isBadRequest());
         mockMvc.perform(MockMvcRequestBuilders.get("/1000")).andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void shouldSaveRecordsAngGetByTimestamps() throws Exception {
+        FileInputStream fis = new FileInputStream("src/test/resources/testfiles/testFile_success.txt");
+        MockMultipartFile upload = new MockMultipartFile("file", fis);
+        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        MockHttpServletRequestBuilder builder =
+                MockMvcRequestBuilders.multipart("/")
+                        .file(upload);
+
+        mockMvc.perform(builder).andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/?begin=1000&end=2599398572&page=1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[*].id").value(containsInAnyOrder(11, 12, 13, 14, 21)));
+
     }
 
 }
