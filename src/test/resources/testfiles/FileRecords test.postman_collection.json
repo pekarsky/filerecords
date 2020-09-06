@@ -1,0 +1,116 @@
+{
+	"info": {
+		"_postman_id": "ff8f3ff7-a32b-4e34-ae52-39fa0a493865",
+		"name": "FileRecords test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post file - success",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/D:/dev/projects/filerecords/src/test/resources/testfiles/testFile_success.txt"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8088/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post file - error - empty line",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/D:/dev/projects/filerecords/src/test/resources/testfiles/testFile_error_empty_line.txt"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8088/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get record by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8088/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get records between timestamps",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8088/?begin=1000&end=50000000000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						""
+					],
+					"query": [
+						{
+							"key": "begin",
+							"value": "1000"
+						},
+						{
+							"key": "end",
+							"value": "50000000000"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
